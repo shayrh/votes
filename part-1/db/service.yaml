@@ -1,0 +1,14 @@
+#path: part-1/db/service-db-alias.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: voting-app
+spec:
+  selector:
+    app: my-voting-app-db
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP

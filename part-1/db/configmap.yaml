@@ -1,0 +1,14 @@
+#path: part-1/db/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-voting-app-db-md5-init
+  namespace: voting-app
+data:
+  10-md5-init.sql: |
+    -- Force password hashes and auth method to use md5 for the legacy result service
+    ALTER SYSTEM SET password_encryption = 'md5';
+    SELECT pg_reload_conf();
+
+    -- Re-hash the superuser password using md5 (SCRAM hashes are incompatible)
+    ALTER ROLE "postgres" WITH PASSWORD 'postgres';

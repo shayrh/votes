@@ -1,0 +1,47 @@
+#path: part-1/db/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-voting-app-db
+  namespace: voting-app
+  #use namespace voting-app
+spec:
+  replicas: 1
+  #statefulset could be used for persistence
+  selector:
+    matchLabels:
+      app: my-voting-app-db
+  template:
+    metadata:
+      labels:
+        app: my-voting-app-db
+    spec:
+      containers:
+      - name: my-voting-app-db
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "votingdb"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "postgres"
+        - name: POSTGRES_INITDB_ARGS
+          value: "--auth-host=md5 --auth-local=md5"
+        volumeMounts:
+        - name: db-init
+          mountPath: /docker-entrypoint-initdb.d
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: db-init
+        configMap:
+          name: my-voting-app-db-md5-init
+

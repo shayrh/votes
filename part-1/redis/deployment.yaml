@@ -1,0 +1,34 @@
+#part1 - /redis/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-voting-app-redis
+  namespace: voting-app
+  #use namespace voting-app
+spec:
+  replicas: 1
+  #statefulset could be used for persistence
+  selector:
+    matchLabels:
+      app: my-voting-app-redis
+  template:
+    metadata:
+      labels:
+        app: my-voting-app-redis
+    spec:
+      containers:
+      #docker pull alpine:latest
+      #minikube image load alpine:latest
+      - name: my-voting-app-redis
+        image: redis:alpine
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+
+

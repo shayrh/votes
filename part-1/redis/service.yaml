@@ -1,0 +1,18 @@
+#path: part-1/redis/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-voting-app-redis
+  namespace: voting-app
+  #use namespace voting-app
+spec:
+  selector:
+    app: my-voting-app-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  type: ClusterIP
+  #default type is ClusterIP
+
+

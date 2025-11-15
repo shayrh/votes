@@ -1,0 +1,45 @@
+#part1 - vote/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-voting-app-vote
+  namespace: voting-app
+  #use namespace voting-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-voting-app-vote
+  template:
+    metadata:
+      labels:
+        app: my-voting-app-vote
+    spec:
+      containers:
+      #docker pull dockersamples/examplevotingapp_vote:before
+      #minikube image load dockersamples/examplevotingapp_vote:latest
+      - name: my-voting-app-vote
+        image: dockersamples/examplevotingapp_vote:latest
+        ports:
+        - containerPort: 80
+        env:
+        #configure environment variables for redis and postgres connections
+        - name: REDIS
+          value: "my-voting-app-redis"
+        - name: REDIS_HOST
+          value: "my-voting-app-redis"
+        - name: POSTGRES_HOST
+          value: "my-voting-app-db"
+        - name: POSTGRES_DB
+          value: "votingdb"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "postgres"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi

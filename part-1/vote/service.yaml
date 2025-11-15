@@ -1,0 +1,17 @@
+#part1 - vote/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-voting-app-vote
+  namespace: voting-app
+  #use namespace voting-app
+spec:
+  selector:
+    app: my-voting-app-vote
+  ports:
+    - protocol: TCP
+      nodePort: 31000
+      port: 80
+      targetPort: 80  
+  type: NodePort
+  #added nodePort for minikube access

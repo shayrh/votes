@@ -1,0 +1,8 @@
+#part-1/namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: voting-app
+  labels:
+    name: voting-app
+#namespace for voting app components

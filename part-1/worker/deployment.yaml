@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-voting-app-worker
+  namespace: voting-app
+  #use namespace voting-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-voting-app-worker
+  template:
+    metadata:
+      labels:
+        app: my-voting-app-worker
+    spec:
+      containers:
+      - name: my-voting-app-worker
+        image: dockersamples/examplevotingapp_worker:latest
+        env:
+        #configure environment variables for redis and postgres connections
+        - name: REDIS
+          value: "my-voting-app-redis"
+        - name: REDIS_HOST
+          value: "my-voting-app-redis"
+        - name: POSTGRES_HOST
+          value: "my-voting-app-db"
+        - name: POSTGRES_DB
+          value: "postgres"
+        - name: POSTGRES_USER
+          value: "postgres"
+        - name: POSTGRES_PASSWORD
+          value: "postgres"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+            
