@@ -25,9 +25,9 @@ spec:
         env:
         #configure environment variables for redis and postgres connections
         - name: REDIS
-          value: "my-voting-app-redis"
+          value: "redis"
         - name: REDIS_HOST
-          value: "my-voting-app-redis"
+          value: "redis"
         - name: POSTGRES_HOST
           value: "my-voting-app-db"
         - name: POSTGRES_DB
