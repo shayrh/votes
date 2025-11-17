@@ -37,6 +37,8 @@ spec:
         - name: POSTGRES_INITDB_ARGS
           value: "--auth-host=md5 --auth-local=md5"
         volumeMounts:
+        - name: postgres-pvc
+          mountPath: /var/lib/postgresql/data
         - name: db-init
           mountPath: /docker-entrypoint-initdb.d
         resources:
@@ -50,4 +52,7 @@ spec:
       - name: db-init
         configMap:
           name: my-voting-app-db-md5-init
+      - name: postgres-pvc
+        persistentVolumeClaim:
+          claimName: postgres-pvc
 
