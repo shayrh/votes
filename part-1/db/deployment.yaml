@@ -25,9 +25,15 @@ spec:
         - name: POSTGRES_DB
           value: "votingdb"
         - name: POSTGRES_USER
-          value: "postgres"
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
-          value: "postgres"
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_PASSWORD
         - name: POSTGRES_INITDB_ARGS
           value: "--auth-host=md5 --auth-local=md5"
         volumeMounts:

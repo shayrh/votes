@@ -19,18 +19,28 @@ spec:
         image: dockersamples/examplevotingapp_worker:latest
         env:
         #configure environment variables for redis and postgres connections
-        - name: REDIS
-          value: "redis"
         - name: REDIS_HOST
-          value: "redis"
+          valueFrom:
+            configMapKeyRef:
+              name: config-worker
+              key: REDIS_HOST
         - name: POSTGRES_HOST
-          value: "my-voting-app-db"
+          valueFrom:
+            configMapKeyRef:
+              name: config-worker
+              key: POSTGRES_HOST
         - name: POSTGRES_DB
-          value: "postgres"
+          value: "votingdb"
         - name: POSTGRES_USER
-          value: "postgres"
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_USER
         - name: POSTGRES_PASSWORD
-          value: "postgres"
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: POSTGRES_PASSWORD
         resources:
           requests:
             cpu: 100m

@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: my-voting-app-result
   namespace: voting-app
-  #use namespace voting-app
 spec:
   replicas: 1
   selector:
@@ -15,24 +14,22 @@ spec:
         app: my-voting-app-result
     spec:
       containers:
-      - name: my-voting-app-result
-        image: dockersamples/examplevotingapp_result:latest
-        ports:
-        - containerPort: 80
-        env:
-        - name: POSTGRES_HOST
-          value: "my-voting-app-db"
-        - name: POSTGRES_DB
-          value: "votingdb"
-        - name: POSTGRES_USER
-          value: "postgres"
-        - name: POSTGRES_PASSWORD
-          value: "postgres"
-        resources:
-          requests:
-            cpu: 100m
-            memory: 256Mi
-          limits:
-            cpu: 500m
-            memory: 512Mi
+        - name: my-voting-app-result
+          image: dockersamples/examplevotingapp_result:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: config-results
+                  key: POSTGRES_HOST
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+
 
